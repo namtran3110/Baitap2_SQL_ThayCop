@@ -1,7 +1,9 @@
 # Bài kiểm tra số 2
-# Họ và tên: Trần Nhất Nam
-# MSSV: K235480106001
-# Lớp: K59KMT
+## Thông tin sinh viên
++ **Họ và tên: Trần Nhất Nam**
++ **MSSV: K235480106001**
++ **Lớp: K59KMT**
++ **Trường Đại Học Kỹ Thuật Công Nghiệp**
 ---
 ## Phần 1: Thiết kế và Khởi tạo Cấu trúc Dữ liệu
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a487dbc1-a16c-42cd-8b4b-d0a262f8047a" />
@@ -23,16 +25,16 @@
 [ Ảnh 6: Code tạo các bảng ]
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/edf8444b-3922-4491-b317-63600c0d4a6a" />
-[ Ảnh 7: Ràng buộc các khóa ]
-
-- Các khóa chính (PK): 
+[ Ảnh 7: Bảng các trường và ràng buộc khóa ]
+___
+- **Các khóa chính (PK):**
   - Bảng [TheLoaiSach]: Khóa chính là cột [MaTheLoai]
   - Bảng [DocGia]: Khóa chính là cột [MaDocGia]
   - Bảng [Sach]: Khóa chính là cột [MaSach]
   - Bảng [QLMuonTra]: Khóa chính là cột [MaGiaoDich]
 --> Tất cả các khóa chính đều được gắn thuộc tính IDENTITY(1,1) để hệ thống tự   động cấp phát và tăng dần mã số (1, 2, 3...). Điều này giúp người dùng không cần nhập tay mã ID, loại bỏ hoàn toàn rủi ro trùng lặp hoặc thiếu sót dữ liệu.
 
-- Khóa ngoại (FK):
+- **Khóa ngoại (FK):**
   - FK tại bảng [Sach]: Cột [MaTheLoai] chiếu tới PK của bảng [TheLoaiSach].
     --> Nó   bắt buộc mỗi cuốn sách khi nhập kho phải thuộc về một danh mục thể loại đã có sẵn.
   - FK thứ nhất tại bảng [QLMuonTra]: Cột [MaDocGia] chiếu tới PK của bảng [DocGia]. 
@@ -40,7 +42,7 @@
   - FK thứ hai tại bảng [QLMuonTra]: Cột [MaSach] chiếu tới PK của bảng [Sach]. 
     --> Nó ngăn chặn việc thủ thư cho mượn một cuốn sách không có trong kho.
 
-- Ràng buộc kiểm tra (CK): 
+- **Ràng buộc kiểm tra (CK):** 
   - Bảng [Sach]: Trường [NamXuatBan] chỉ chấp nhận giá trị trong khoảng từ 1900-2026.
   - Bảng [DocGia]: Trường [TienCoc] bắt buộc phải >= 0 (không được âm).
   - Bảng [QLMuonTra]: Trường [TienPhat] bắt buộc phải >= 0 (không được âm).
@@ -62,12 +64,23 @@
   + Cấu trúc: STRING_AGG(tên_cột_cần_gộp, 'ký_tự_ngăn_cách')
 --> Bình thường, nếu một độc giả mượn 3 cuốn sách, khi ta SELECT, SQL sẽ trả về 3 dòng lặp lại tên độc giả đó. Điều này làm báo cáo rất dài và khó xem. STRING_AGG sẽ làm cho tên độc giả chỉ hiện 1 dòng, và toàn bộ 3 cuốn sách sẽ nằm gọn gàng trong 1 ô, cách nhau bởi dấu phẩy.
     
-**Hàm do người dùng tự viết**
-Phân loại:
-  - Hàm vô hướng (Scalar Function): Trả về duy nhất 01 giá trị
-    - --> Dùng khi cần tính toán một giá trị cụ thể từ các tham số đầu vào. Ví dụ: Tính tổng tiền phạt của một độc giả dựa trên số ngày trễ.
+**HÀM DO NGƯỜI DÙNG TỰ VIẾT**
+**PHÂN LOẠI LÀM 3 LOẠI CHÍNH:**  
+- 1.Hàm vô hướng (Scalar Function): Hàm trả về duy nhất 1 giá trị
+  - --> Dùng khi cần tính toán một giá trị cụ thể từ các tham số đầu vào. Ví dụ: Tính tổng tiền phạt của một độc giả dựa trên số ngày trễ.
+- 2.Hàm giá trị bảng Inline (Inline TVF): Trả về một bảng dữ liệu thông qua duy nhất một câu lệnh SELECT.
+  - --> Dùng khi cần lọc dữ liệu nhanh theo tham số mà không có logic phức tạp. Hiệu năng của loại này rất cao vì SQL Server coi nó như một View động.
+- 3.Hàm giá trị bảng Multi-statement (MSTVF): Trả về một bảng dữ liệu nhưng có cấu trúc phức tạp, sử dụng biến bảng.
+  - --> Dùng khi cần thực hiện nhiều bước xử lý: kiểm tra điều kiện IF-ELSE, dùng vòng lặp, hoặc kết hợp dữ liệu từ nhiều nguồn trước khi trả về kết quả cuối cùng.
+**Mục đích chính của hàm người dùng tự viết**  
+- Có 3 mục đích chính cốt lõi:
+  - Tái sử dụng mã nguồn: Thay vì viết đi viết lại một công thức tính toán phức tạp ở nhiều câu truy vấn khác nhau, ta đóng gói nó vào một hàm và gọi tên hàm đó khi cần.
+  - Tính đóng gói: Giấu đi các logic xử lý phức tạp bên trong hàm, giúp câu lệnh SQL chính trở nên ngắn gọn, dễ đọc và dễ bảo trì hơn.
+  - Định nghĩa logic nghiệp vụ riêng: Hệ thống không thể biết quy trình tính điểm thưởng hay tiền phạt của từng thư viện cụ thể, UDF chính là nơi để ta hiện thực hóa các quy tắc đó.
 
-
+**TẠI SAO CÓ SẴN SYSTEM FUNCTION RỒI VẪN PHẢI TỰ VIẾT?**
+- Nguyên nhân:
+  - Các hàm hệ thống sẵn có đơn thuần phục vụ các tác vụ chung mà mọi hệ thống đều cần. Ngược lại, hàm UDF được viết để giải quyết  các quy tắc nghiệp vụ riêng của từng dự án
 
 
 
