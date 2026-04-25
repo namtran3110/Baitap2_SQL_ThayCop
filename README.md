@@ -46,23 +46,23 @@
   - Bảng [QLMuonTra]: Trường [TienPhat] bắt buộc phải >= 0 (không được âm).
 ---
 ## Phần 2: Xây dựng Function 
-- Trong SQL Server, Built-in Function được chia làm 4 nhóm chính:
+- Trong SQL Server, Built-in Function được chia làm 4 nhóm chính
   - Hàm vô hướng (Scalar Functions): Trả về một giá trị duy nhất (Hàm toán học, chuỗi, ngày tháng).
   - Hàm tập hợp (Aggregate Functions): Tính toán trên một tập dữ liệu (SUM, AVG, COUNT, MAX, MIN).
   - Hàm xếp hạng (Ranking Functions): Dùng trong phân tích dữ liệu (ROW_NUMBER, RANK).
   - Hàm logic: Các hàm kiểm tra điều kiện (IIF, CHOOSE).
   
-Hai hàm Built-in mà em cảm thấy hay và hữu dụng để dùng trong bài quản lý thư viện:
+**Hai hàm Built-in mà em cảm thấy hay và hữu dụng để dùng trong bài quản lý thư viện**
 - 1.Hàm DATEDIFF()
   - Ý nghĩa: dùng để đo lường khoảng cách giữa hai mốc thời gian dựa trên một đơn vị chọn trước (ngày, giờ, tháng, năm...)
   - Cấu trúc: DATEDIFF(đơn_vị, ngày_bắt_đầu, ngày_kết_thúc)
-  - --> Quản lý thư viện thực chất là quản lý thời hạn. Nếu không có hàm này, người cán bộ thư viện sẽ rất vất vả để tính xem độc giả đã quá hạn bao lâu. Thay vì phải ngồi cộng trừ ngày tháng phức tạp, DATEDIFF xử lý mọi thứ chỉ trong một dòng lệnh, bất chấp năm nhuận hay tháng có 28, 30 hay 31 ngày.
+--> Quản lý thư viện thực chất là quản lý thời hạn. Nếu không có hàm này, người cán bộ thư viện sẽ rất vất vả để tính xem độc giả đã quá hạn bao lâu. Thay vì phải ngồi cộng trừ ngày tháng phức tạp, DATEDIFF xử lý mọi thứ chỉ trong một dòng lệnh, bất chấp năm nhuận hay tháng có 28, 30 hay 31 ngày.
 - 2.Hàm STRING_AGG()
   - Ý nghĩa: dùng để gộp các giá trị từ nhiều dòng dữ liệu khác nhau thành một chuỗi văn bản duy nhất, ngăn cách bởi một ký tự đã chọn.
-  - Cấu trúc: STRING_AGG(tên_cột_cần_gộp, 'ký_tự_ngăn_cách')
-  - --> Bình thường, nếu một độc giả mượn 3 cuốn sách, khi ta SELECT, SQL sẽ trả về 3 dòng lặp lại tên độc giả đó. Điều này làm báo cáo rất dài và khó xem. STRING_AGG sẽ làm cho tên độc giả chỉ hiện 1 dòng, và toàn bộ 3 cuốn sách sẽ nằm gọn gàng trong 1 ô, cách nhau bởi dấu phẩy.
+  + Cấu trúc: STRING_AGG(tên_cột_cần_gộp, 'ký_tự_ngăn_cách')
+--> Bình thường, nếu một độc giả mượn 3 cuốn sách, khi ta SELECT, SQL sẽ trả về 3 dòng lặp lại tên độc giả đó. Điều này làm báo cáo rất dài và khó xem. STRING_AGG sẽ làm cho tên độc giả chỉ hiện 1 dòng, và toàn bộ 3 cuốn sách sẽ nằm gọn gàng trong 1 ô, cách nhau bởi dấu phẩy.
     
-Hàm do người dùng tự viết
+**Hàm do người dùng tự viết**
 Phân loại:
   - Hàm vô hướng (Scalar Function): Trả về duy nhất 01 giá trị
     - --> Dùng khi cần tính toán một giá trị cụ thể từ các tham số đầu vào. Ví dụ: Tính tổng tiền phạt của một độc giả dựa trên số ngày trễ.
