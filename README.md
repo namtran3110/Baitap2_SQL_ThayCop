@@ -5,7 +5,7 @@
 + **Lớp: K59KMT**
 + **Trường Đại Học Kỹ Thuật Công Nghiệp**
 ---
-## Phần 1: Thiết kế và Khởi tạo Cấu trúc Dữ liệu
+## PHẦN 1: Thiết kế và Khởi tạo Cấu trúc Dữ liệu
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a487dbc1-a16c-42cd-8b4b-d0a262f8047a" />
 Ảnh 1: Khởi tạo Database với tên QuanLyThuVien_K235480106001
 
@@ -47,8 +47,10 @@ ___
   - Bảng [DocGia]: Trường [TienCoc] bắt buộc phải >= 0 (không được âm).
   - Bảng [QLMuonTra]: Trường [TienPhat] bắt buộc phải >= 0 (không được âm).
 ---
-## Phần 2: Xây dựng Function 
-- Trong SQL Server, Built-in Function được chia làm 4 nhóm chính
+## PHẦN 2: Xây dựng Function 
+### YÊU CẦU 1: Hãy cho biết trong SQL Server có những loại function build_in (hàm có sẵn) nào, nêu 1 vài system function build_in mà em tìm hiểu được (ko cần nhiều, cần đặc sắc theo góc nhìn của em), cho SQL khai thác các hàm đó.
+
+**Trong SQL Server, Built-in Function được chia làm 4 nhóm chính**
   - Hàm vô hướng (Scalar Functions): Trả về một giá trị duy nhất (Hàm toán học, chuỗi, ngày tháng).
   - Hàm tập hợp (Aggregate Functions): Tính toán trên một tập dữ liệu (SUM, AVG, COUNT, MAX, MIN).
   - Hàm xếp hạng (Ranking Functions): Dùng trong phân tích dữ liệu (ROW_NUMBER, RANK).
@@ -63,7 +65,9 @@ ___
   - Ý nghĩa: dùng để gộp các giá trị từ nhiều dòng dữ liệu khác nhau thành một chuỗi văn bản duy nhất, ngăn cách bởi một ký tự đã chọn.
   + Cấu trúc: STRING_AGG(tên_cột_cần_gộp, 'ký_tự_ngăn_cách')
 --> Bình thường, nếu một độc giả mượn 3 cuốn sách, khi ta SELECT, SQL sẽ trả về 3 dòng lặp lại tên độc giả đó. Điều này làm báo cáo rất dài và khó xem. STRING_AGG sẽ làm cho tên độc giả chỉ hiện 1 dòng, và toàn bộ 3 cuốn sách sẽ nằm gọn gàng trong 1 ô, cách nhau bởi dấu phẩy.
-    
+---
+### YÊU CẦU 2: Hàm do người dùng tự viết trong SQL thường mang mục đích gì? Nó có những loại nào? Mỗi loại thường được dùng khi nào? Tại sao có nhiều system function rồi mà vẫn cần tự viết fn riêng?
+
 **HÀM DO NGƯỜI DÙNG TỰ VIẾT**
 **PHÂN LOẠI LÀM 3 LOẠI CHÍNH:**  
 - 1.Hàm vô hướng (Scalar Function): Hàm trả về duy nhất 1 giá trị
@@ -80,8 +84,45 @@ ___
 
 **TẠI SAO CÓ SẴN SYSTEM FUNCTION RỒI VẪN PHẢI TỰ VIẾT?**
 - Nguyên nhân:
-  - Các hàm hệ thống sẵn có đơn thuần phục vụ các tác vụ chung mà mọi hệ thống đều cần. Ngược lại, hàm UDF được viết để giải quyết  các quy tắc nghiệp vụ riêng của từng dự án
+  - Tính chuyên biệt: Các hàm System functions sẵn có đơn thuần phục vụ các tác vụ chung mà mọi hệ thống đều cần. Ngược lại, hàm UDF được viết để giải quyết các quy tắc nghiệp vụ riêng của từng dự án
+  - Khả năng tùy biến sâu: Các hàm System functions là 1 hộp đen mà ta không thể thay đổi cách nó chạy. Hàm UDF thì ngược lại, ta có toàn quyền kiểm soát logic xử lý bên trong để phù hợp với yêu cầu thay đổi người sử dụng hoặc khách hàng.
+  - Gọn gàng và sạch chương trình: UDF giúp ẩn đi sự phức tạp của các phép tính lồng nhau, chuyển đổi chúng thành một tên hàm gợi nhớ. Điều này giúp các câu lệnh SQL chính trở nên ngắn gọn, minh bạch và dễ dàng kiểm soát lỗi hơn.
+---
+### YÊU CẦU 3: Viết 01 Scalar Function (Hàm trả về một giá trị): Đưa ra 1 logic cho cơ sở dữ liệu của em, mà cần dùng đến function này. (SV TỰ NGHĨ RA YÊU CẦU CỦA HÀM VÀ VIẾT HÀM GIẢI QUYẾT NÓ). Sau khi đã có hàm, viết câu lệnh sql khai thác hàm đó.
 
+**TÌNH HUỐNG LOGIC ĐẶT RA KHI QUẢN LÝ THƯ VIỆN TRÊN THỰC TẾ**  
+- Trong thực tế, thư viện luôn có quy định giới hạn số lượng sách được mượn cùng lúc của một độc giả, ví dụ: mỗi người chỉ được mượn tối đa 3 cuốn. Để thủ thư kiểm tra nhanh xem một độc giả hiện tại đang giữ bao nhiêu cuốn sách (những sách đã mượn nhưng chưa mang trả)
+--> Để dễ dàng quản lý hơn khi sử dụng phần mềm SQL Server, ta cần tạo 1 hàm vô hướng (Scalar Function).
+Yêu cầu của hàm:
+  - Đầu vào là Mã độc giả (@MaDocGia).
+  - Đầu ra là một con số nguyên (INT) đếm tổng số lượt mượn mà trường [NgayTraThucTe] đang bị bỏ trống (NULL).
+**XÂY DỰNG CHƯƠNG TRÌNH TRONG SQL SERVER**
+
+paste từng code sau đó cho vào sql, giải thích cơ chế
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+### YÊU CẦU 4: Viết 01 Inline Table-Valued Function: Trả về danh sách các bản ghi theo một điều kiện lọc cụ thể (SV TỰ NGHĨ RA YÊU CẦU CỦA HÀM VÀ VIẾT HÀM GIẢI QUYẾT NÓ). Sau khi đã có hàm, viết câu lệnh sql khai thác hàm đó.
+
+
+
+---
+### YÊU CẦU 5: Viết 01 Multi-statement Table-Valued Function: Thực hiện xử lý logic phức tạp bên trong (có sử dụng biến bảng) trước khi trả về kết quả. (SV TỰ NGHĨ RA YÊU CẦU CỦA HÀM VÀ VIẾT HÀM GIẢI QUYẾT NÓ). Sau khi đã có hàm, viết câu lệnh sql khai thác hàm đó.
+
+
+---
+## PHẦN 3: Xây dựng Store Procedure
 
 
 
