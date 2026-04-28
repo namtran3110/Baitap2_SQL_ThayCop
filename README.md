@@ -148,22 +148,55 @@ Yêu cầu của hàm:
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/92ea0036-19f3-40d8-a56d-0592c0115742" />
 [ Ảnh 15: Chương trình của Multi-statement Table-Valued Function với tên là fn_BaoCaoChiTietCongNo ]
 
-soạn lại code và chụp lại ảnh, ảnh này ảnh cũ
-
-
 - Để phù hợp với bài tập mô phỏng, logic tính tiền phạt và cấm mượn sách của thư viện sẽ là:
   - Thời hạn mượn: 30 ngày kể từ ngày mượn.
   - Tiền phạt cơ bản: 5.000đ/ngày, bắt đầu tính sau khi hết 30 ngày mượn.
   - Trần tiền phạt: Tiền phạt không được vượt quá giá tiền cuốn sách (GiaBan).
   - Phụ phí vi phạm: Nếu tiền phạt đã bằng giá sách mà vẫn chưa trả, cộng thêm 50% giá trị cuốn sách vào tổng tiền phạt (mục đích là tránh để bảo quản những cuốn đắt tiền luôn được trả sớm).
   - Cấm mượn: Nếu trễ quá 30 ngày tính phạt (tổng cộng 60 ngày cầm sách), độc giả sẽ bị cấm mượn 6 tháng.
-  - Biên bản: Nếu tổng tiền trong suốt quá trình mượn >300k thì bị biên bản cảnh cáo lần 1, nếu còn vi phạm (tổng tiền >600k) thì bị biên bản lần 2 và bị cấm mượn trong 1 năm
+  - Biên bản cảnh cáo: Nếu tổng tiền trong suốt quá trình mượn >300k thì bị biên bản cảnh cáo lần 1, nếu còn vi phạm (tổng tiền >600k) thì bị biên bản lần 2 và bị cấm mượn trong 1 năm
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3a6ce50-b787-4005-9bd6-d5dc533aac5a" />
 [ Ảnh 16: Truy xuất và tính thử tiền phạt SV ID 02 - Phạm Thị Thu Trà ]
 
 ---
 ## PHẦN 3: Xây dựng Store Procedure
+### YÊU CẦU 1: Trong SQL Server có những SP có sẵn nào? nêu 1 vài system sp mà em tìm hiểu được, giải thích cách dùng chúng.
+
+**MỘT VÀI Store Procedure CÓ SẴN TRONG SQL VÀ CÁCH SỬ DỤNG**  
+- sp_help:
+  - Dùng để cung cấp thông tin chi tiết về một đối tượng (bảng, view, index...). Nó cho biết bảng có những cột nào, kiểu dữ liệu gì.
+  - Cú pháp: EXEC sp_help 'Sach';
+- sp_helptext:
+  - Dùng để hiển thị mã nguồn của các đối tượng không bị mã hóa như: Function, Stored Procedure, hoặc View. Rất hữu ích khi cần xem lại logic đã viết.
+  - Cú pháp: EXEC sp_helptext 'fn_BaoCaoTongHopViPham';
+- sp_rename:
+  - Dùng để đổi tên một đối tượng (bảng hoặc cột) trong cơ sở dữ liệu hiện tại mà không cần phải xóa đi và tạo lại từ đầu.
+  - Cú pháp: EXEC sp_rename 'Old_Table_Name', 'New_Table_Name';
+- sp_databases:
+  - Dùng để liệt kê danh sách tất cả các cơ sở dữ liệu đang tồn tại trên SQL Server instance đang kết nối.
+  - Cú pháp: EXEC sp_databases;
+- sp_who:
+  - Dùng để kiểm tra các phiên làm việc, người dùng và các tiến trình đang chạy trên SQL Server. Giúp xác định ai đang thực thi lệnh và kiểm tra tình trạng nghẽn hệ thống.
+  - Cú pháp: EXEC sp_who;
+---
+
+### YÊU CẦU 2: Viết 01 Store Procedure đơn giản để thực hiện lệnh INSERT hoặc UPDATE dữ liệu, có kiểm tra điều kiện logic (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ)
+
+**YÊU CẦU CỦA SP**
+- Nhằm tối ưu hóa trải nghiệm đọc, thư viện liên tục cập nhật và bổ sung các ấn phẩm mới nhất trên thị trường. Tuy nhiên, thách thức đặt ra là sự bùng nổ về số lượng đầu sách cùng sự biến động liên tục của giá cả theo thời gian, đòi hỏi một cơ chế quản lý dữ liệu linh hoạt và chính xác.
+--> Cần phải sử dụng SP để tăng tốc độ xử lý nghiệp vụ này của thư viện.
+
+**XÂY DỰNG Store Procedure**
+<<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/195e9b67-5458-42c3-a9a6-f95e304389cb" />
+[ Ảnh 17: Chương trình Store Procedure với tên sp_CapNhatThongTinSach ]
+
+cần chèn htêm dữ liệu mới vào, gemini nhanh quá ngu, không chèn được còn làm sai dữ liệu, sử dụng code trong zalo rồi từ đó chèn thêm sau
+---
+### YÊU CẦU 3: Viết 01 Store Procedure có sử dụng tham số OUTPUT để trả về một giá trị tính toán (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ, SP NÀY CÓ DÙNG THAM SỐ LOẠI OUTPUT)
+
+---
+### YÊU CẦU 4: Viết 01 Store Procedure trả về một tập kết quả (Result set) từ lệnh SELECT sau khi đã join nhiều bảng. (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ)
 
 
 
@@ -180,7 +213,25 @@ soạn lại code và chụp lại ảnh, ảnh này ảnh cũ
 
 
 
+---
+## Phần 4: Trigger và Xử lý logic nghiệp vụ (Kiến thức 11)
+### YÊU CẦU 1: Viết 01 Trigger để tự động làm gì đó tại 1 bảng B khi mà dữ liệu thay đổi dữ liệu ở bảng A. Logic giải quyết do sv tự nghĩ ra, sao cho thực tế và thuyết phục.
 
+---
+### YÊU CẦU 2: Thử viết Trigger cho Bảng A : Khi insert thì cập nhật dữ liệu vào bảng B; sau đó viết trigger cho bảng B để khi B được cập nhật thì cập nhật sang bảng A : Quan sát các thông báo (nếu có) của hệ thống, giải thích các thông báo đó (nếu có). Đưa ra nhật xét cuối cùng về tình trạng này.
+
+
+
+## Phần 5: Cursor và Duyệt dữ liệu (Kiến thức 11) 
+
+---
+### YÊU CẦU 1: Viết một đoạn script sử dụng CURSOR để duyệt qua danh sách của 1 câu lệnh SQL dạng SELECT, duyệt qua từng bản ghi, xử lý riêng từng bản ghi (THEO LOGIC SV TỰ ĐẶT RA: SAO CHO HỢP LÝ VÀ THUYẾT PHỤC) 
+
+---
+### YÊU CẦU 2: Tìm cách không sử dụng CURSOR để giải quyết bài toán mà em đã dùng CURSOR mới giải quyết được ở trên. thử so sánh tốc độ giữa có dùng cursor và không dùng cursor (nếu cùng kết quả) thì thời gian xử lý cái nào nhanh hơn, cần ảnh chụp màn hình minh chứng.
+
+---
+### YÊU CẦU 3: Nếu vẫn tìm được cách dùng SQL để giải quyết vấn đề mà ko cần CURSOR: thử nghĩ bài toán khác, mà chỉ CURSOR mới giải quyết được, còn SQL rất khó giải quyết đc (theo logic suy nghĩ của em)
 
 
 
