@@ -145,8 +145,10 @@ Yêu cầu của hàm:
 --> Cần xây dựng 1 Multi-statement Table-Valued Function để thuận tiện cho việc kiểm tra sách nào quá hạn và tính số tiền phạt tăng lên theo từng ngày.
 
 **XÂY DỰNG VÀ KIỂM NGHIỆM HÀM**  
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/542af85e-15c4-4706-9a5d-83e2446d41a9" />
-[ Ảnh 15: Chương trình của Multi-statement Table-Valued Function với tên là fn_BaoCaoChiTietCongNo ]  
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/92ea0036-19f3-40d8-a56d-0592c0115742" />
+[ Ảnh 15: Chương trình của Multi-statement Table-Valued Function với tên là fn_BaoCaoChiTietCongNo ]
+
+soạn lại code và chụp lại ảnh, ảnh này ảnh cũ
 
 
 - Để phù hợp với bài tập mô phỏng, logic tính tiền phạt và cấm mượn sách của thư viện sẽ là:
@@ -156,7 +158,10 @@ Yêu cầu của hàm:
   - Phụ phí vi phạm: Nếu tiền phạt đã bằng giá sách mà vẫn chưa trả, cộng thêm 50% giá trị cuốn sách vào tổng tiền phạt.
   - Cấm mượn: Nếu trễ quá 30 ngày tính phạt (tổng cộng 60 ngày cầm sách), độc giả sẽ bị cấm mượn 6 tháng.
   - Biên bản: Nếu tổng tiền trong suốt quá trình mượn >300k thì bị biên bản cảnh cáo lần 1, nếu còn vi phạm (tổng tiền >600k) thì bị biên bản lần 2 và bị cấm mượn trong 1 năm
-    
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3a6ce50-b787-4005-9bd6-d5dc533aac5a" />
+[ Ảnh 16: Truy xuất và tính thử tiền phạt SV ID 02 - Phạm Thị Thu Trà ]
+
 ---
 ## PHẦN 3: Xây dựng Store Procedure
 
