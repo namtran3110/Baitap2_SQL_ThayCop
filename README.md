@@ -5,7 +5,7 @@
 + **Lớp: K59KMT**
 + **Trường Đại Học Kỹ Thuật Công Nghiệp**
 ---
-## PHẦN 1: Thiết kế và Khởi tạo Cấu trúc Dữ liệu
+## PHẦN 1: THIẾT KẾ VÀ KHỞI TẠO CẤU TRÚC DỮ LIỆU
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a487dbc1-a16c-42cd-8b4b-d0a262f8047a" />
 [ Ảnh 1: Khởi tạo Database với tên QuanLyThuVien_K235480106001 ]  
 
@@ -26,15 +26,17 @@
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/edf8444b-3922-4491-b317-63600c0d4a6a" />
 [ Ảnh 7: Bảng các trường và ràng buộc khóa ]
-___
-- **Các khóa chính (PK):**
+
+---
+- **CÁC KHÓA CHÍNH (PK):**
   - Bảng [TheLoaiSach]: Khóa chính là cột [MaTheLoai]
   - Bảng [DocGia]: Khóa chính là cột [MaDocGia]
   - Bảng [Sach]: Khóa chính là cột [MaSach]
   - Bảng [QLMuonTra]: Khóa chính là cột [MaGiaoDich]
+
 --> Tất cả các khóa chính đều được gắn thuộc tính IDENTITY(1,1) để hệ thống tự   động cấp phát và tăng dần mã số (1, 2, 3...). Điều này giúp người dùng không cần nhập tay mã ID, loại bỏ hoàn toàn rủi ro trùng lặp hoặc thiếu sót dữ liệu.
 
-- **Khóa ngoại (FK):**
+- **KHÓA NGOẠI (FK):**
   - FK tại bảng [Sach]: Cột [MaTheLoai] chiếu tới PK của bảng [TheLoaiSach].
     --> Nó   bắt buộc mỗi cuốn sách khi nhập kho phải thuộc về một danh mục thể loại đã có sẵn.
   - FK thứ nhất tại bảng [QLMuonTra]: Cột [MaDocGia] chiếu tới PK của bảng [DocGia]. 
@@ -115,10 +117,14 @@ Yêu cầu của hàm:
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0a25fed3-87c1-4f25-afb4-b144f94b3437" />
 [ Ảnh 11: Kết quả trả về của Scalar function ]  
+
 - Khi chạy câu lệnh SELECT khai thác hàm fn_DemSoSachDangMuon, kết quả trả về hoàn toàn khớp với logic dữ liệu đã nạp ở Bảng [QLMuonTra]. Cụ thể, hàm chỉ đếm những giao dịch có NgayTraThucTe IS NULL
+
 --> Kết luận: Hàm chạy hoàn toàn chính xác, giúp xác định được độc giả đang giữ bao nhiêu sách, giúp thủ thư quản lý và đưa ra quyết định có cho mượn thêm sách hay không.
+
 ---
 ### YÊU CẦU 4: Viết 01 Inline Table-Valued Function: Trả về danh sách các bản ghi theo một điều kiện lọc cụ thể (SV TỰ NGHĨ RA YÊU CẦU CỦA HÀM VÀ VIẾT HÀM GIẢI QUYẾT NÓ). Sau khi đã có hàm, viết câu lệnh sql khai thác hàm đó.
+
 
 **TÌNH HUỐNG LOGIC THỰC TẾ**  
 - Khi một sinh viên đến gặp thủ thư để thắc mắc về lịch sử mượn sách, thủ thư cần xem nhanh toàn bộ danh sách các cuốn sách mà sinh viên đó đã từng mượn từ trước đến nay, bao gồm cả ngày mượn và ngày trả thực tế.
@@ -132,6 +138,7 @@ Yêu cầu của hàm:
 - Có 2 hình thức để truy xuất lịch sử tùy theo thủ thư:
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d0002af0-96a0-4139-9367-d99411518106" />
 [ Ảnh 13: Thủ thư truy xuất đến lịch sử của duy nhất SV id 1 - Trần Tuấn Anh ]
+
   - Cơ chế: Khi truyền MaDocGia = 1, SQL sẽ lọc trong bảng QLMuonTra tất cả các dòng của sinh viên đó, kết nối sang bảng Sach để lấy tên sách tương ứng và ném ra một bảng kết quả tạm thời.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/360dff63-9c9d-4b7e-99a8-009d6dd252d3" />
