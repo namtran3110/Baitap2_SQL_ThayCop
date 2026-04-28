@@ -145,8 +145,18 @@ Yêu cầu của hàm:
 --> Cần xây dựng 1 Multi-statement Table-Valued Function để thuận tiện cho việc kiểm tra sách nào quá hạn và tính số tiền phạt tăng lên theo từng ngày.
 
 **XÂY DỰNG VÀ KIỂM NGHIỆM HÀM**  
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/542af85e-15c4-4706-9a5d-83e2446d41a9" />
+[ Ảnh 15: Chương trình của Multi-statement Table-Valued Function với tên là fn_BaoCaoChiTietCongNo ]  
 
-Dữ liệu trong bảng [QLMuonTra] chỉ có: Ngày mượn, Ngày trả dự kiến. Nó không có sẵn cột "Tiền phạt hiện tại" vì tiền phạt thay đổi theo từng ngày (hôm nay bạn trả là 5k, nhưng để mai mới trả thì nó đã lên 10k rồi).
+
+- Để phù hợp với bài tập mô phỏng, logic tính tiền phạt và cấm mượn sách của thư viện sẽ là:
+  - Thời hạn mượn: 30 ngày kể từ ngày mượn.
+  - Tiền phạt cơ bản: 5.000đ/ngày, bắt đầu tính sau khi hết 30 ngày mượn.
+  - Trần tiền phạt: Tiền phạt không được vượt quá giá tiền cuốn sách (GiaBan).
+  - Phụ phí vi phạm: Nếu tiền phạt đã bằng giá sách mà vẫn chưa trả, cộng thêm 50% giá trị cuốn sách vào tổng tiền phạt.
+  - Cấm mượn: Nếu trễ quá 30 ngày tính phạt (tổng cộng 60 ngày cầm sách), độc giả sẽ bị cấm mượn 6 tháng.
+  - Biên bản: Nếu tổng tiền trong suốt quá trình mượn >300k thì bị biên bản cảnh cáo lần 1, nếu còn vi phạm (tổng tiền >600k) thì bị biên bản lần 2 và bị cấm mượn trong 1 năm
+    
 ---
 ## PHẦN 3: Xây dựng Store Procedure
 
