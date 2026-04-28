@@ -155,7 +155,7 @@ soạn lại code và chụp lại ảnh, ảnh này ảnh cũ
   - Thời hạn mượn: 30 ngày kể từ ngày mượn.
   - Tiền phạt cơ bản: 5.000đ/ngày, bắt đầu tính sau khi hết 30 ngày mượn.
   - Trần tiền phạt: Tiền phạt không được vượt quá giá tiền cuốn sách (GiaBan).
-  - Phụ phí vi phạm: Nếu tiền phạt đã bằng giá sách mà vẫn chưa trả, cộng thêm 50% giá trị cuốn sách vào tổng tiền phạt.
+  - Phụ phí vi phạm: Nếu tiền phạt đã bằng giá sách mà vẫn chưa trả, cộng thêm 50% giá trị cuốn sách vào tổng tiền phạt (mục đích là tránh để bảo quản những cuốn đắt tiền luôn được trả sớm).
   - Cấm mượn: Nếu trễ quá 30 ngày tính phạt (tổng cộng 60 ngày cầm sách), độc giả sẽ bị cấm mượn 6 tháng.
   - Biên bản: Nếu tổng tiền trong suốt quá trình mượn >300k thì bị biên bản cảnh cáo lần 1, nếu còn vi phạm (tổng tiền >600k) thì bị biên bản lần 2 và bị cấm mượn trong 1 năm
 
