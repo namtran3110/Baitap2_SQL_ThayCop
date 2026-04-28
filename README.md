@@ -195,12 +195,35 @@ Yêu cầu của hàm:
 --> Cần phải sử dụng SP để tăng tốc độ xử lý nghiệp vụ này của thư viện.
 
 **XÂY DỰNG Store Procedure**
-<<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/195e9b67-5458-42c3-a9a6-f95e304389cb" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9e5f9ace-74a9-4625-b2af-373c7adb5368" />
 [ Ảnh 17: Chương trình Store Procedure với tên sp_CapNhatThongTinSach ]
 
-cần chèn htêm dữ liệu mới vào, gemini nhanh quá ngu, không chèn được còn làm sai dữ liệu, sử dụng code trong zalo rồi từ đó chèn thêm sau
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c46e1cd4-ba2d-475d-be98-402b227ed236" />
+[ Ảnh 18: Thêm 1 sách mới với mã loại 2-CNTT ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9b324f81-4614-4e83-95b0-42a664274ee5" />
+[ Ảnh 19: Cập nhật giá cho 1 sách đã có từ trước ]
+
+- Store Procedure hoạt động hoàn hảo, giúp chèn, cập nhật và sửa đổi các dữ liệu đã có và dữ liệu mới thay cho các câu lệnh insert, update của sql
+
 ---
 ### YÊU CẦU 3: Viết 01 Store Procedure có sử dụng tham số OUTPUT để trả về một giá trị tính toán (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ, SP NÀY CÓ DÙNG THAM SỐ LOẠI OUTPUT)
+
+**YÊU CẦU CỦA SP**  
+- Trong quản lý thư viện, việc thống kê là cực kỳ quan trọng. Chúng ta sẽ viết một SP để thống kê tổng số đầu sách và tổng giá trị tiền sách của một thể loại cụ thể.
+
+**XÂY DỰNG Store Procedure**
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/df618476-868a-417d-a968-7365ba786fc1" />
+[ Ảnh 20: Chương trình với tên là sp_ThongKeSachTheoLoai ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4846832a-ee87-44b1-8a19-433792b318bf" />
+[ Ảnh 21: Thống kê tổng số sách và giá trị các cách loại 2-CNTT ]
+
+Các thành phần và vai trò:  
+- Thủ thư:  Người ra lệnh và cung cấp "thùng chứa" (Biến OUTPUT) để nhận kết quả.
+- SQL Engine: Bộ máy xử lý trung gian, nhận lệnh, biên dịch và điều phối việc truy xuất dữ liệu.
+- Database: Nơi lưu trữ bảng Sach. SQL sẽ truy cập vào đây để quét dữ liệu thực tế.
+- Tham số OUTPUT: Đóng vai trò là "cổng giao tiếp ngược", cho phép dữ liệu đi từ bên trong Database ra ngoài môi trường người dùng mà không cần tạo tập kết quả cồng kềnh.
 
 ---
 ### YÊU CẦU 4: Viết 01 Store Procedure trả về một tập kết quả (Result set) từ lệnh SELECT sau khi đã join nhiều bảng. (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ)
