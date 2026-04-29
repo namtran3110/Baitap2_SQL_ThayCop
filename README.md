@@ -228,37 +228,102 @@ Các thành phần và vai trò:
 ---
 ### YÊU CẦU 4: Viết 01 Store Procedure trả về một tập kết quả (Result set) từ lệnh SELECT sau khi đã join nhiều bảng. (SV TỰ NGHĨ RA YÊU CẦU CỦA SP VÀ VIẾT SP GIẢI QUYẾT NÓ)
 
+**Ý TƯỞNG**  
+- Thiết lập thủ tục sp_BaoCaoChiTietMuonTra. Thủ tục này thực hiện kết nối 4 bảng: DocGia, QLMuonTra, Sach, và TheLoaiSach để thay thế các mã ID khô khan bằng thông tin định danh chi tiết. Kết quả trả về là một danh sách trực quan phục vụ công tác đối soát và in ấn báo cáo tại thư viện.
 
+**XÂY DỰNG Store Procedure**  
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/562a3090-bdcb-40f1-9482-c4eded39b9b5" />
+[ Ảnh 22: Chương trình Store Procedure trả về một tập kết quả với tên là sp_BaoCaoChiTietMuonTra ]
 
-
-
-
-
-
-
-
-
-
-
-
-
+- Kết quả thực thi thủ tục sp_BaoCaoChiTietMuonTra cho thấy tập kết quả đã hiển thị đầy đủ thông tin định danh thay vì các mã ID số học. Thông qua các phép liên kết INNER JOIN, hệ thống đã truy xuất dữ liệu từ bảng QLMuonTra, đối chiếu với bảng DocGia để lấy tên, bảng Sach để lấy tên sách và bảng TheLoaiSach để xác định thể loại. Điều này chứng minh cấu trúc cơ sở dữ liệu và các mối quan hệ đã được thiết lập đúng đắn và hoạt động ổn định.
 
 ---
 ## Phần 4: Trigger và Xử lý logic nghiệp vụ (Kiến thức 11)
 ### YÊU CẦU 1: Viết 01 Trigger để tự động làm gì đó tại 1 bảng B khi mà dữ liệu thay đổi dữ liệu ở bảng A. Logic giải quyết do sv tự nghĩ ra, sao cho thực tế và thuyết phục.
 
+**Ý TƯỞNG**
+- Bảng A: Sach.
+- Bảng B: LichSuGiaSach.
+- Logic: Mỗi khi thủ thư cập nhật giá bán của một cuốn sách ở bảng Sach, Trigger sẽ tự động ghi lại một dòng vào bảng LichSuGiaSach bao gồm: Mã sách, giá cũ, giá mới và thời gian thay đổi.
+- --> Mục đích chính là giúp thủ thư kiểm soát được việc tăng/giảm giá sách bất thường, tránh thất thoát tài chính hoặc sai sót trong nhập liệu.
+ 
+**XÂY DỰNG TRIGGER**
+<img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/82029d2b-c127-4e1b-9f9d-e217b1bacf08" />
+[ Ảnh 23: Khởi tạo bảng LichSuGiaSach (bảng B) ]
+
+- Bảng LichSuGiaSach sẽ được sử dụng để lưu mã sách, giá cũ, giá mới và thời gian thay đổi khi thủ thư chỉnh sửa.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/89147e63-b5ca-4206-99b0-29162e935fde" />
+[ Ảnh 24: Viết trigger lưu lịch sử với tên là trg_LuuLichSuGiaSach ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5dfc0e2b-3e95-4b81-8170-d0a73fb426dd" />
+[ Ảnh 25: Cập nhật sách mã số 1 lên 99k ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dccc6c50-c568-4752-b2e7-b17e9957fae9" />
+[ Ảnh 26: Giá cuốn ID 1 đã được sửa thành 99k ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e591de2f-ba59-4896-97a8-c12e126d9f58" />
+[ Ảnh 27: Trigger đã thực hiện ghi lại lịch sử thay đổi cuốn sách ID 1 từ 48k lên 99k ]
+
 ---
 ### YÊU CẦU 2: Thử viết Trigger cho Bảng A : Khi insert thì cập nhật dữ liệu vào bảng B; sau đó viết trigger cho bảng B để khi B được cập nhật thì cập nhật sang bảng A : Quan sát các thông báo (nếu có) của hệ thống, giải thích các thông báo đó (nếu có). Đưa ra nhật xét cuối cùng về tình trạng này.
 
+**XÂY DỰNG CHƯƠNG TRÌNH**
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/37019ecb-1ae7-4517-9e4b-0e89ae744a27" />
+[ Ảnh 28: Thêm 1 cột ghi chú vào bảng TheLoaiSach để tiện quan sát ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ec20b0f8-be84-4717-865e-b34cb8283f6f" />
+[ Ảnh 29: Viết trigger cho bảng A ]
+- Trigger này có nhiệm vụ khi ta insert dữ liệu vào bảng A thì chèn thông tin và bảng B.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8a159c41-497e-4165-bc27-308376fbf32d" />
+[ Ảnh 30: Viết trigger cho bảng B ]
+- Nhiệm vụ của trigger này là khi thông tin ở bảng B đã được chèn thì cập nhật lại ghi chú ở bảng A.
+
+<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/41e9d74f-78a7-472a-a31a-65f3b169a1c2" />
+[ Ảnh 31: Insert 1 cuốn sách mới vào bảng A ]
+- Trigger lồng ở trên chỉ mới chạy ở 2 cấp theo thứ tự A->B->A, hệ thống hoạt động hoàn toàn bình thường mà không báo lỗi.
 
 ## Phần 5: Cursor và Duyệt dữ liệu (Kiến thức 11) 
 
 ---
 ### YÊU CẦU 1: Viết một đoạn script sử dụng CURSOR để duyệt qua danh sách của 1 câu lệnh SQL dạng SELECT, duyệt qua từng bản ghi, xử lý riêng từng bản ghi (THEO LOGIC SV TỰ ĐẶT RA: SAO CHO HỢP LÝ VÀ THUYẾT PHỤC) 
 
+**Ý TƯỞNG BAN ĐẦU**
+- Do biến động thị trường, thư viện cần cập nhật lại giá bán của toàn bộ đầu sách hiện có. Tuy nhiên, mỗi thể loại sẽ có mức tăng khác nhau:
+  - Thể loại 2 (Công nghệ thông tin): Tăng 5% (do sách kỹ thuật nhanh lỗi thời).
+  - Thể loại 4 (Ngoại ngữ): Tăng 10% (do chi phí bản quyền cao).
+  - Các thể loại còn lại: Tăng 2% đồng loạt.
+  - Yêu cầu: Sau khi tính toán, in ra thông báo chi tiết cho từng cuốn sách để thủ thư đối soát.
+
+**XÂY DỰNG CHƯƠNG TRÌNH SỬ DỤNG CURSOR**
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ff7c0e7a-3295-491d-bbcc-2765a773357e" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2bc6eb70-6244-4c7d-a119-6f3fc920d0ae" />
+[ Ảnh 32+33: Đoạn script sử dụng cursor để tăng toàn bộ giá sách trong thư viện ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8245cc12-45af-44fd-bc80-d6adb8fce741" />
+[ Ảnh 34: Kết quả sau khi tăng giá sách hàng loạt bằng đoạn script ]
+
+- Giải thích cơ chế hoạt động:
+  - Cơ chế duyệt: Cursor hoạt động như một con trỏ chạy dọc theo tập kết quả của câu lệnh SELECT. Thay vì xử lý cả bảng cùng một lúc, nó "gắp" từng dòng dữ liệu và nạp vào các biến @MaSach, @MaTheLoai... mà chúng ta đã khai báo.
+  - Biến @@FETCH_STATUS: Đây là biến hệ thống quan trọng. Nó trả về 0 nếu việc lấy dữ liệu thành công và khác 0 khi đã duyệt hết danh sách hoặc gặp lỗi. Đây là "chìa khóa" để điều khiển vòng lặp WHILE.
+  - Tính thuyết phục của Logic: Cursor cho phép thực hiện các phép toán phức tạp (như IF...ELSE phân tầng) trên từng dòng mà một câu lệnh UPDATE đơn giản khó thực hiện được một cách tường minh. Việc in thông báo (Print) trong vòng lặp giúp thủ thư theo dõi được tiến trình xử lý theo thời gian thực (real-time auditing).
+
 ---
 ### YÊU CẦU 2: Tìm cách không sử dụng CURSOR để giải quyết bài toán mà em đã dùng CURSOR mới giải quyết được ở trên. thử so sánh tốc độ giữa có dùng cursor và không dùng cursor (nếu cùng kết quả) thì thời gian xử lý cái nào nhanh hơn, cần ảnh chụp màn hình minh chứng.
+
+- Thay vì sử dụng cursor như ở yêu cầu trên, tại yêu cầu này em sẽ dùng Set-based Update để làm thực hiện công việc tương tự và so sánh tốc độ của 2 cách:
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b3a7c249-9055-467e-88dd-5af2723cd12f" />
+[ Ảnh 35: Cập nhật giá sách sử dụng lệnh update kết hơp biểu thức case-when ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c3dab1b6-1dec-40b3-a212-370ec511bdd3" />
+[ Ảnh  : Tốc độ xử lý của lệnh update ]
+
+<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/df896621-2240-4ce7-bd6e-64d0131a9fa1" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/18752437-d74b-42c4-b4a9-57c5e0f9c6d0" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8a8984d0-6fa9-414e-bc52-de80c5b9bf2e" />
+[ Ảnh : Tốc độ xử lý của đoạn script sử dụng cursor ]
 
 ---
 ### YÊU CẦU 3: Nếu vẫn tìm được cách dùng SQL để giải quyết vấn đề mà ko cần CURSOR: thử nghĩ bài toán khác, mà chỉ CURSOR mới giải quyết được, còn SQL rất khó giải quyết đc (theo logic suy nghĩ của em)
