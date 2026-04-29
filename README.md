@@ -325,6 +325,11 @@ Các thành phần và vai trò:
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8a8984d0-6fa9-414e-bc52-de80c5b9bf2e" />
 [ Ảnh : Tốc độ xử lý của đoạn script sử dụng cursor ]
 
+**SO SÁNH 2 HƯỚNG XỬ LÝ BÀI TOÁN SỬA GIÁ SÁCH THƯ VIỆN**
+- 
+
+
+
 ---
 ### YÊU CẦU 3: Nếu vẫn tìm được cách dùng SQL để giải quyết vấn đề mà ko cần CURSOR: thử nghĩ bài toán khác, mà chỉ CURSOR mới giải quyết được, còn SQL rất khó giải quyết đc (theo logic suy nghĩ của em)
 
