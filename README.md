@@ -326,13 +326,24 @@ Các thành phần và vai trò:
 [ Ảnh : Tốc độ xử lý của đoạn script sử dụng cursor ]
 
 **SO SÁNH 2 HƯỚNG XỬ LÝ BÀI TOÁN SỬA GIÁ SÁCH THƯ VIỆN**
-- 
 
-
+| Tiêu chí | Phương pháp sử dụng CURSOR (Row-by-row) | Phương pháp SET-BASED (Lệnh UPDATE) |
+| :--- | :--- | :--- |
+| **Cơ chế hoạt động** | **Hướng thủ tục (Procedural):** Hoạt động như vòng lặp `for/while`. Duyệt qua tập kết quả tuần tự và gắp từng dòng lên để xử lý. | **Hướng tập hợp (Declarative):** Khai báo kết quả mong muốn. Hệ thống tự động đối chiếu điều kiện và áp dụng thay đổi cho tất cả các dòng thỏa mãn cùng lúc. |
+| **Tốc độ thực thi** | **Rất chậm:** Hệ thống phải lặp lại quy trình kiểm tra bảo mật, tính toán logic và đánh giá ràng buộc cho từng dòng (FETCH NEXT). | **Cực kỳ nhanh:** Được bộ máy truy vấn (Query Optimizer) tối ưu hóa tối đa, lập Kế hoạch thực thi (Execution Plan) tuyến tính để quét hàng loạt. |
+| **Tài nguyên hệ thống** | **Tiêu tốn nhiều (Overhead cao):** Mất chi phí cấp phát bộ nhớ để duy trì trạng thái của "con trỏ" và tốn tài nguyên I/O cho mỗi thao tác đọc/ghi đơn lẻ. | **Tiết kiệm, tối ưu:** Xử lý trực tiếp trên vùng nhớ đệm (Buffer Pool) dưới dạng các khối dữ liệu lớn (Pages/Extents), giảm thiểu I/O vật lý. |
+| **Độ phức tạp mã lệnh** | **Dài dòng, cồng kềnh:** Bắt buộc phải thực hiện đủ 5 bước vòng đời: Khai báo (`DECLARE`), Mở (`OPEN`), Duyệt (`FETCH`), Đóng (`CLOSE`), Giải phóng (`DEALLOCATE`). | **Ngắn gọn, dễ bảo trì:** Toàn bộ logic phân tầng phức tạp (IF...ELSE) đều có thể gói gọn trong một câu lệnh `UPDATE` kết hợp `CASE...WHEN`. |
+| **Khóa dữ liệu (Locking)** | **Dễ gây nghẽn (Blocking/Deadlock):** Phải mở và giữ khóa trên các dòng dữ liệu trong suốt thời gian vòng lặp chạy, ngăn cản các tiến trình khác. | **Tối ưu hóa tranh chấp:** Tự động quyết định mức độ khóa (Row, Page, Table lock) phù hợp và giải phóng ngay lập tức khi giao dịch hoàn tất (chỉ mất vài mili giây). |
 
 ---
 ### YÊU CẦU 3: Nếu vẫn tìm được cách dùng SQL để giải quyết vấn đề mà ko cần CURSOR: thử nghĩ bài toán khác, mà chỉ CURSOR mới giải quyết được, còn SQL rất khó giải quyết đc (theo logic suy nghĩ của em)
 
+**BÀI TOÁN ĐẶT RA BAN ĐẦU**
+- Vì thường xuyên có người trả sách mượn muộn nên thư viện tung ra chương trình tích điểm đổi thưởng với cơ chế:
+  - 1 lần trả sách đúng hạn được cộng 1đ (đủ 10đ được hệ thống ghi nhận là "Khách hàng thân thiết" và được tặng 1 móc khóa ngẫu nhiên)
+  - Khi đã lên hạng "Khách hàng thân thiết", mỗi lần trả sách đúng hạn cộng 1.5đ (đạt 30đ sẽ được tặng 1 vở ghi và bút viết)
+
+--> Bắt buộc phải thiết kế 1 chương trình sử dụng cursor để xử lý thay vì dùng các lệnh SQL thông thường. Nguyên nhân là vì đây là bài toán tính toán phụ thuộc trạng thái động (Điểm của dòng thứ 11 là 1.0 hay 1.5 lại phụ thuộc hoàn toàn vào việc tổng điểm của 10 dòng trước đó đã đạt mốc 10 hay chưa). SQL Set-based không thể tham chiếu đến kết quả đang biến đổi của chính nó trong cùng một lần quét dữ liệu. Buộc phải dùng CURSOR để duy trì một biến trạng thái @TongDiem chạy xuyên suốt từ trên xuống dưới. 
 
 
 
