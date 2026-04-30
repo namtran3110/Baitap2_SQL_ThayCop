@@ -318,14 +318,14 @@ Các thành phần và vai trò:
 [ Ảnh 35: Cập nhật giá sách sử dụng lệnh update kết hơp biểu thức case-when ]
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c3dab1b6-1dec-40b3-a212-370ec511bdd3" />
-[ Ảnh  : Tốc độ xử lý của lệnh update ]
+[ Ảnh 36: Thời gian xử lý của lệnh update ]
 
 <img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/df896621-2240-4ce7-bd6e-64d0131a9fa1" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/18752437-d74b-42c4-b4a9-57c5e0f9c6d0" />
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8a8984d0-6fa9-414e-bc52-de80c5b9bf2e" />
-[ Ảnh : Tốc độ xử lý của đoạn script sử dụng cursor ]
+[ Ảnh 37+38+39: Thời gian xử lý của đoạn script sử dụng cursor ]
 
-**SO SÁNH 2 HƯỚNG XỬ LÝ BÀI TOÁN SỬA GIÁ SÁCH THƯ VIỆN**
+**SO SÁNH 2 HƯỚNG HOÀN THÀNH BÀI TOÁN SỬA GIÁ SÁCH THƯ VIỆN**
 
 | Tiêu chí | Phương pháp sử dụng CURSOR (Row-by-row) | Phương pháp SET-BASED (Lệnh UPDATE) |
 | :--- | :--- | :--- |
@@ -344,6 +344,39 @@ Các thành phần và vai trò:
   - Khi đã lên hạng "Khách hàng thân thiết", mỗi lần trả sách đúng hạn cộng 1.5đ (đạt 30đ sẽ được tặng 1 vở ghi và bút viết)
 
 --> Bắt buộc phải thiết kế 1 chương trình sử dụng cursor để xử lý thay vì dùng các lệnh SQL thông thường. Nguyên nhân là vì đây là bài toán tính toán phụ thuộc trạng thái động (Điểm của dòng thứ 11 là 1.0 hay 1.5 lại phụ thuộc hoàn toàn vào việc tổng điểm của 10 dòng trước đó đã đạt mốc 10 hay chưa). SQL Set-based không thể tham chiếu đến kết quả đang biến đổi của chính nó trong cùng một lần quét dữ liệu. Buộc phải dùng CURSOR để duy trì một biến trạng thái @TongDiem chạy xuyên suốt từ trên xuống dưới. 
+
+**XÂY DỰNG CHƯƠNG TRÌNH**
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b093558c-1d01-4d2c-a6c8-e82db99f6c75" />
+[ Ảnh 40: Thiết lập môi trường và giả lập dữ liệu ]
+
+- Mục tiêu: Khởi tạo cấu trúc lưu trữ gồm bảng DocGia_Demo (lưu thông tin bậc hạng) và LichSuTraSach_Demo (lưu lịch sử giao dịch).
+- Phần này giả lập một kịch bản thực tế: Một độc giả có quá trình trả sách đúng hạn lâu dài (22 lần). Đây là dữ liệu để kiểm chứng khả năng tự động thăng hạng và thay đổi hệ số điểm của hệ thống ở các bước sau.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f32bb7f4-1b16-4352-a133-13a3f19ab9ef" />
+<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/95b46953-5b33-4f90-be41-83f3e01bbe22" />
+[ Ảnh 41+42: Chương trình sử dụng cursor ]
+
+- Mục tiêu: Đóng gói toàn bộ logic nghiệp vụ vào một Thủ tục lưu trữ (Stored Procedure) để có thể tái sử dụng linh hoạt.
+
+Logic thực hiện:
+  - Sử dụng Cursor để duyệt qua từng lần trả sách theo trình tự thời gian.
+  - Áp dụng Máy trạng thái (State Machine): Kiểm tra tổng điểm tích lũy tại mỗi dòng để quyết định:
+    - (1) Cộng bao nhiêu điểm? (2) Có đủ điều kiện nâng hạng không? (3) Có kích hoạt quà tặng không?
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/75c5bd60-a5b0-46fb-96c6-3601380eee64" />
+[ Ảnh 43: Demo độc giả Nguyễn Văn An trả sách đúng hạn và lần lượt đạt các mốc thưởng ]
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e713bc41-c9de-45c2-8fb0-ee268f1e1331" />
+[ Ảnh 44: Demo độc giả Trần Thị Nga trả sách đúng hạn 15 lần và mới chỉ đạt mốc quà 1 ]
+
+
+
+
+
+
+
+
+
 
 
 
